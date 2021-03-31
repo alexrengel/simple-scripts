@@ -24,6 +24,6 @@ If instructions aren't clear, feel free to leave me a comment.
 
 
 ## up (bash)
-The script `up` creates a python http server running on port 80 in the current directory. It also pulls the current `tun0` IPv4 so that the user can efficiently copy and paste it into a reverse shell script.
+The script `up` creates a python http server running on port 8080 in the current directory. It also pulls the current `tun0` IPv4 so that the user can efficiently copy and paste it into a reverse shell script.
 
 
