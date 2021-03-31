@@ -1,0 +1,10 @@
+#!/bin/bash
+iptun0=$(ip a s tun0 | awk '/inet .*scope/ {print $2}' | awk -F '/' '{print $1}')
+
+if [ -z "$iptun0" ]
+then
+	echo "Tun0 is not active"
+else
+	echo "Tun0 IP: $iptun0"
+	python3 -m http.server 80
+fi
