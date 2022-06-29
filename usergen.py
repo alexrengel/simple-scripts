@@ -29,6 +29,8 @@ def main(argv):
                 #check to see if it contains first and last name
                 if len(names) == 2:
                         good_name_count += 1
+                        o_file.write((names[0]).lower()+'\n')
+                        o_file.write((names[1]).lower()+'\n')
                         o_file.write((names[0]+names[1]).lower()+'\n')
                         o_file.write((names[0]+'.'+names[1]).lower()+'\n')
                         o_file.write((names[1]+names[0]).lower()+'\n')
@@ -40,7 +42,7 @@ def main(argv):
         o_file.close()
         i_file.close()
         #summary
-        print ("%d names where read (%d good, %d bad): %d variations created at %s!"%(good_name_count+bad_name_count,good_name_count,bad_name_count,good_name_count*6,outputfile))
+        print ("%d names where read (%d good, %d bad): %d variations created at %s!"%(good_name_count+bad_name_count,good_name_count,bad_name_count,good_name_count*8,outputfile))
 
 if __name__ == "__main__":
         main(sys.argv[1:])

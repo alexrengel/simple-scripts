@@ -1,18 +1,74 @@
 #!/bin/bash
-iptun0=$(ip a s tun0 | awk '/inet .*scope/ {print $2}' | awk -F '/' '{print $1}')
-echo $1
-if [ -z "$1" ]
-then
-        $iptunport="$1"
-else
-        $iptunport="8080"
-fi
-echo $iptunport
 
-if [ -z "$iptun0" ]
-then
-	echo "Tun0 is not active"
+# Name: `up` (default)
+# Creator: by Alex A. Rengel | June 29, 2022
+# Version: see `v_flag`
+# Description: Bash script to create a quick http(s) Web server
+# Usage: ./up.sh (or whatever the name of the script is)
+# Optional parameters:
+#   -p [port]		Choose target port on local machine
+#   -i [interface]	Choose interface to use ie. `eth0`, `tun0`
+#   -v			See current script version
+
+#Default values
+i_flag='eth0' # Interface
+p_flag='80' # Port
+v_flag='1.0'
+
+print_usage() {
+  printf 'Usage: %s: [-i interface] [-p port]\n' $0;
+}
+
+while getopts 'i:p:hv' flag; do
+  case "${flag}" in
+    i) i_flag="${OPTARG}" ;;
+    p) p_flag="${OPTARG}" ;;
+    h) print_usage; exit 1 ;;
+    v) printf "Version ${v_flag}"; exit 1 ;;
+    *) print_usage;
+       exit 1 ;;
+  esac
+done
+
+# Check if port is in use
+port=$(lsof -i -P -n | grep ${p_flag} | awk '{print $1}')
+if [[ ${port} != '' ]]; then
+  printf "Port ${p_flag} is being used by '${port}'.\n"
+  printf "Use argument '-p [port]' to select another port."
+  exit 1;
+fi
+
+# Check if interface exists
+interface=$(ip a s ${i_flag} | awk '/inet .*scope/ {print $2}' | awk -F '/' '{print $1}')
+if [[ ${interface} == '' ]]; then
+  exit 1;
+fi
+
+#Assemble URL, remove port if `80`, and add `https` if ports `443` or `8443`
+if [[ ${p_flag} == '80' ]]; then
+ s_url="http://${interface}/"
+elif [ ${p_flag} == '443' ]; then
+  s_url="https://${interface}/"
+elif [ ${p_flag} == '8443' ]; then
+  s_url="https://${interface}:8443/"
 else
-	echo "Tun0 IP: $iptun0"
-	python3 -m http.server $1
+  s_url="http://${interface}:${p_flag}"
+fi
+
+#Print and copy URL with `Xclip`
+printf "Address: ${s_url} (copied with xclip!)\n" #Print URL
+printf "${s_url}" | xclip #Copy URL
+printf "Directory: ${PWD}/\n" # Print working directory
+
+#Check python versions 3 > 2 > 1
+if [[ $(type python3) != *"not found"* || $(type python3) != '' ]]; then
+  python3 -m http.server ${p_flag}
+elif [[ $(type python2) != *"not found"* || $(type python2) != '' ]]; then
+  python2 -m SimpleHTTPServer ${p_flag}
+elif [[ $(type python) != *"not found"* || $(type python) != '' ]]; then
+  python -m SimpleHTTPServer ${p_flag}
+else
+  printf "No versions of python found.\n"
+  printf "Web server cannot start.\n"
+  exit 1
 fi
