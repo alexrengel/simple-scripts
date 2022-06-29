@@ -1,6 +1,6 @@
 # Simple Scripts
 
-> Simple bash scripts that streamline my Kali workflow, including pentesting and CTF events.
+> Simple scripts for pentesting and CTFs, mainly written in `bash` and `python`, that streamline Kali workflow by automating tedious manual tasks.
 
 ## Script description and usage:
 
