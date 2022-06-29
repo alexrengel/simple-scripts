@@ -55,9 +55,14 @@ else
   s_url="http://${interface}:${p_flag}"
 fi
 
-#Print and copy URL with `Xclip`
-printf "Address: ${s_url} (copied with xclip!)\n" #Print URL
-printf "${s_url}" | xclip #Copy URL
+#Print and URL
+printf "${i_flag} ddress: ${s_url} (copied with xclip!)\n" #Print URL
+#Copy with Xclip if installed
+if [[ $(type xclip) != *"not found"* || $(type xclip) != '' ]]; then
+  printf "${s_url}" | xclip #Copy URL
+else
+  print "${s_url} (no 'xclip' installed)"
+fi
 printf "Directory: ${PWD}/\n" # Print working directory
 
 #Check python versions 3 > 2 > 1
