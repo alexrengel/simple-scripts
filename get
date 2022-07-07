@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Name: `up` (default)
+# Creator: by Alex A. Rengel | June 29, 2022
+# Version: see `v_flag`
+# Description: Bash script to create a quick http(s) Web server
+# Usage: ./up.sh (or whatever the name of the script is)
+# Optional parameters:
+#   -p [port]		Choose target port on local machine
+#   -i [interface]	Choose interface to use ie. `eth0`, `tun0`
+#   -v			See current script version
+
+# Set some default values:
+
+
+# Array pretending to be a Pythonic dictionary
+declare -A urls
+urls['linpeas']='https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh'
+urls['pspy']='https://github.com/DominicBreuker/pspy/releases/download/v1.2.0/pspy64'
+
+if ! [ -v urls["${1}"] ]; then
+  echo "Parameter ${1} doesn't exists or has not been created."
+  exit 1;
+fi
+
+printf "Downloading ${1} from ${urls[${1}]}..."
+wget "${urls[${1}]}"
