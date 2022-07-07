@@ -10,6 +10,8 @@ The script `up` creates a python Web server running in the current directory. By
 ### usergen.py (python3)
 The script `usergen.py` is used as `usergen.py -i file_with_first_and_last_names.lst -o file_to_be_created.lst` or by appending the `python` command at the begining. The script generates a list of possible usernames from first and last names given by line on an input file.
 
+### get (bash)
+The script `get` contains hardcoded keys and values (script names and their URLs) that can be quickly downloaded using `wget`. Usage: `get [script_name]`
 
 ## More:
 
